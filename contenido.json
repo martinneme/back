@@ -1,0 +1,16 @@
+[{
+    "title": "HTML Y CSS",
+    "price": 23500,
+    "thumbnail": "http://link1",
+    "id": 1
+}, {
+    "title": "Javascript",
+    "price": 55300,
+    "thumbnail": "http://link2",
+    "id": 2
+}, {
+    "title": "ReactJs",
+    "price": 63500,
+    "thumbnail": "http://link3",
+    "id": 3
+}]

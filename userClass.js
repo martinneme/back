@@ -1,50 +1,74 @@
-class usuario {
-  constructor(nombre, apellido, libros, mascotas) {
-    this.nombre = nombre;
-    this.apellido = apellido;
-    this.libros = [libros];
-    this.mascotas = mascotas;
+
+const fs = require("fs");
+const { type } = require("os");
+
+
+class Contenedor{
+  constructor(pathFile){
+    this.pathFile=pathFile;
   }
 
-  get fullName() {
-    return `${this.nombre} ${this.apellido}`;
+ async save(obj){
+  const content = await this.readFile()
+   const cont = await JSON.parse(content)
+   cont.length ? obj.id = await this.lastId(): obj.id=1;
+   cont.push(obj)
+   this.writeFile(JSON.stringify(cont))
+}
+
+async lastId(){
+  const content = await this.readFile()
+   const cont = await JSON.parse(content)
+   const ultReg = cont.pop()
+    return ultReg.id+1
   }
 
-  get countMascotas() {
-    return this.mascotas.length;
-  }
+async getAll(){
+  const content = await this.readFile()
+   const cont = await JSON.parse(content)
+   console.log(cont)
+}
 
-  get getBookNames() {
-    return this.libros.map((libro) => libro.nombre);
-  }
+deleteAll(){
+  this.writeFile(JSON.stringify([]))
+}
 
-  addMascotas(nombreMascota) {
-    this.mascotas.push(nombreMascota);
-  }
 
-  addBook(newBook) {
-    this.libros.push(newBook);
-  }
-} 
+ async readFile(){
+  return await fs.promises
+    .readFile(this.pathFile, "utf-8")
+    .catch((err) => {
+      console.error(err);
+    });
+}
 
-const user = new usuario(
-  "Martin",
-  "Neme",
-  { nombre: "Harry Potter", autor: "J. K. Rowling" },
-  ["nina", "Otto"]
-);
+async writeFile(obj){
+  return await fs.promises
+    .writeFile(this.pathFile, obj)
+    .catch((err) => {
+      console.error(err);
+    });
+}
 
-console.log(user);
+async appendContentFile(content){
+  await fs.promises
+   .appendFile(this.pathFile, `${content}\n`)
+   .then(() => {
+     console.log("agregado");
+   })
+   .catch((err) => {
+     console.error(err);
+   });
+}
 
-console.log(`Nombre completo: ${user.fullName}
-El usuario tiene: ${user.countMascotas} Mascotas
-El usuario tiene los libros: ${user.getBookNames}`);
+}
 
-user.addBook({ nombre: "Quijote", autor: "Cervantes" });
-user.addMascotas("Gato");
 
-console.log("______________AFTER__________________");
-console.log(user);
-console.log(`Nombre completo: ${user.fullName}
-El usuario tiene: ${user.countMascotas} Mascotas
-El usuario tiene los libros: ${user.getBookNames}`);
+
+const test= new Contenedor("contenido.json");
+const obj = { title: 'AddTitleTest', price: 63500, thumbnail: 'http://link4' }
+
+test.save(obj)
+//  test.getAll()
+// test.deleteAll()
+// test.lastId()
