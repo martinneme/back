@@ -23,6 +23,15 @@ async lastId(){
     return ultReg.id+1
   }
 
+
+  async getById(id){
+    const content = await this.readFile()
+     const cont = await JSON.parse(content)
+ const reg=  cont.filter(reg=>reg.id===id)
+
+      return reg.length ? reg : null;
+    }
+
 async getAll(){
   const content = await this.readFile()
    const cont = await JSON.parse(content)
@@ -68,7 +77,10 @@ async appendContentFile(content){
 const test= new Contenedor("contenido.json");
 const obj = { title: 'AddTitleTest', price: 63500, thumbnail: 'http://link4' }
 
-test.save(obj)
+// test.save(obj)
 //  test.getAll()
 // test.deleteAll()
 // test.lastId()
+ test.getById(2).then(res=>{
+  console.log(res)
+ })
