@@ -4,7 +4,7 @@ import express from "express";
 const fileManager = new FileManager("productos.txt");
 
 const app = express();
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 
 app.get("/", (req, res) => {
   const welcomeMsj = '<h1 style="color:#0000FF">Bienvenido al server</h1>';
