@@ -1,0 +1,1 @@
+web: nodo ./server.js
