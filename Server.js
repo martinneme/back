@@ -7,7 +7,10 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.get("/", (req, res) => {
-  const welcomeMsj = '<h1 style="color:#0000FF">Bienvenido al server</h1>';
+  const welcomeMsj = `<h1 style="color:#0000FF">Bienvenido al server</h1>
+                      <p>Este provee un servicio API REST</p>
+                      <button onclick="window.location.href='/productos'">Productos</button>
+                      <button onclick="window.location.href='/productosrandom'">Producto random</button>`;
   res.send(welcomeMsj);
 });
 
