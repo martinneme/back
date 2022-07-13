@@ -94,6 +94,33 @@ app.get("/productoRandom", async (req, res) => {
   res.json(response);
 });
 
+app.delete("/productos/:id", async (req, res) => {
+  let response;
+  try {
+    const id = parseInt(req.params.id);
+    const allElements = await fileManager.getAll();
+    const element = allElements.find((ele) => ele.id === id);
+    const index = allElements.indexOf(element);
+    if (index!=-1) {
+      allElements.splice(index, 1);
+      fileManager.writeFile(JSON.stringify([...allElements]));
+      res.json({
+        Delete: "ok",
+        id: req.params.id,
+        ElementDelete: element,
+      });
+    }else{
+      res.json({
+        Delete: `Error, ID: ${id} no existe`,
+        id: req.params.id,
+        ElementDelete: null,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  }
+});
+
 const listener = app.listen(PORT, () => {
   console.log(`Server escuchando ${listener.address().port}`);
 });
