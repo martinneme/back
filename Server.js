@@ -57,24 +57,26 @@ app.put("/productos/update/:id", async (req, res) => {
     const id = parseInt(req.params.id);
     const update = req.body;
     const allElements = await fileManager.getAll();
-    element = allElements.find(ele=>ele.id === id);
+    element = allElements.find((ele) => ele.id === id);
     if (element) {
-      if (element.title != update.title) element["title"] = update.title;
-      if (element.price != update.price) element["price"] = update.price;
-      if (element.thumbnail != update.thumbnail) element["thumbnail"] = update.thumbnail;
+      if (update.title && element.title != update.title)
+        element["title"] = update.title;
+      if (update.price && element.price != update.price)
+        element["price"] = update.price;
+      if (update.thumbnail && element.thumbnail != update.thumbnail)
+        element["thumbnail"] = update.thumbnail;
     }
-    
-    fileManager.writeFile(JSON.stringify([allElements])); 
+
+    fileManager.writeFile(JSON.stringify([...allElements]));
     res.json({
-    update: "ok",
-    id: req.params.id,
-    newElement: element,
-  });
+      update: "ok",
+      id: req.params.id,
+      newElement: element,
+    });
   } catch (e) {
     console.error(e);
   }
   console.log(element);
-
 });
 
 app.get("/productoRandom", async (req, res) => {
