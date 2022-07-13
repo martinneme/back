@@ -16,12 +16,14 @@ export default class FileManager{
    cont.length ? obj.id = await this.lastId(): obj.id=1;
    cont.push(obj)
    this.writeFile(JSON.stringify(cont))
+   return obj.id
   }catch(e){
     
    console.error(e)
   }
-  
+ 
 }
+
 
 async lastId(){
   try{

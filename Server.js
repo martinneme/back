@@ -6,6 +6,9 @@ const fileManager = new FileManager("productos.txt");
 const app = express();
 const PORT = process.env.PORT || 8080;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
   const welcomeMsj = `<h1 style="color:#0000FF">Bienvenido al server</h1>
                       <p>Este provee un servicio API REST</p>
@@ -22,7 +25,56 @@ app.get("/productos", async (req, res) => {
     console.error(e);
   }
 
-  res.send(response);
+  res.json(response);
+});
+
+app.get("/productos/:id", async (req, res) => {
+  let response;
+  try {
+    const id = parseInt(req.params.id);
+    response = await fileManager.getById(id);
+  } catch (e) {
+    console.error(e);
+  }
+  res.json(response);
+});
+
+app.post("/productosadd", async (req, res) => {
+  let response;
+  try {
+    const add = req.body;
+    response = await fileManager.save(add);
+  } catch (e) {
+    console.error(e);
+  }
+
+  res.json(response);
+});
+
+app.put("/productos/update/:id", async (req, res) => {
+  let element;
+  try {
+    const id = parseInt(req.params.id);
+    const update = req.body;
+    const allElements = await fileManager.getAll();
+    element = allElements.find(ele=>ele.id === id);
+    if (element) {
+      if (element.title != update.title) element["title"] = update.title;
+      if (element.price != update.price) element["price"] = update.price;
+      if (element.thumbnail != update.thumbnail) element["thumbnail"] = update.thumbnail;
+    }
+    
+    fileManager.writeFile(JSON.stringify([allElements])); 
+    res.json({
+    update: "ok",
+    id: req.params.id,
+    newElement: element,
+  });
+  } catch (e) {
+    console.error(e);
+  }
+  console.log(element);
+
 });
 
 app.get("/productoRandom", async (req, res) => {
@@ -37,7 +89,7 @@ app.get("/productoRandom", async (req, res) => {
   } catch (e) {
     console.error(e);
   }
-  res.send(response);
+  res.json(response);
 });
 
 const listener = app.listen(PORT, () => {
