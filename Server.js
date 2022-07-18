@@ -10,10 +10,11 @@ const fileManager = new FileManager("productos.txt");
 
 const app = express();
 app.use(express.json());
+const routerProducts = express.Router();
 app.use(routerProducts);
 const PORT = process.env.PORT || 8080;
 
-const routerProducts = express.Router();
+
 routerProducts.use(express.urlencoded({ extended: true }));
 routerProducts.use("/",express.static('public'));
 
@@ -33,18 +34,24 @@ routerProducts.get("/productos", async (req, res) => {
     response = await fileManager.getAll();
   } catch (e) {
     console.error(e);
+    res.status(404)
   }
-
+  res.status(200)
   res.json(response);
 });
 
 routerProducts.get("/productos/:id", async (req, res) => {
+  
   let response;
   try {
     const id = parseInt(req.params.id);
     response = await fileManager.getById(id);
+    if(response === null){
+      throw new Error('Id no existe')
+    }
   } catch (e) {
     console.error(e);
+    res.status(404)
   }
   res.json(response);
 });
