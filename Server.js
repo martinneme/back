@@ -1,23 +1,33 @@
 import FileManager from "./FileManager.js";
 import express from "express";
+import path from 'path';
+import { fileURLToPath } from 'url';
+import bodyParser from'body-parser';
 
 const fileManager = new FileManager("productos.txt");
 
+
+
 const app = express();
+app.use(express.json());
+app.use(routerProducts);
 const PORT = process.env.PORT || 8080;
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const routerProducts = express.Router();
+routerProducts.use(express.urlencoded({ extended: true }));
+routerProducts.use("/",express.static('public'));
 
-app.get("/", (req, res) => {
-  const welcomeMsj = `<h1 style="color:#0000FF">Bienvenido al server</h1>
-                      <p>Este provee un servicio API REST</p>
-                      <button onclick="window.location.href='/productos'">Productos</button>
-                      <button onclick="window.location.href='/productorandom'">Producto random</button>`;
-  res.send(welcomeMsj);
+
+
+
+
+routerProducts.get("/", (req, res) => {
+
+  res.sendFile("/public/index.html")
+
 });
 
-app.get("/productos", async (req, res) => {
+routerProducts.get("/productos", async (req, res) => {
   let response;
   try {
     response = await fileManager.getAll();
@@ -28,7 +38,7 @@ app.get("/productos", async (req, res) => {
   res.json(response);
 });
 
-app.get("/productos/:id", async (req, res) => {
+routerProducts.get("/productos/:id", async (req, res) => {
   let response;
   try {
     const id = parseInt(req.params.id);
@@ -39,10 +49,11 @@ app.get("/productos/:id", async (req, res) => {
   res.json(response);
 });
 
-app.post("/productosadd", async (req, res) => {
+routerProducts.post("/productosadd", async (req, res) => {
   let response;
   try {
     const add = req.body;
+    console.log(add.title)
     response = await fileManager.save(add);
   } catch (e) {
     console.error(e);
@@ -51,7 +62,7 @@ app.post("/productosadd", async (req, res) => {
   res.json(response);
 });
 
-app.put("/productos/update/:id", async (req, res) => {
+routerProducts.put("/productos/update/:id", async (req, res) => {
   let element;
   try {
     const id = parseInt(req.params.id);
@@ -79,7 +90,7 @@ app.put("/productos/update/:id", async (req, res) => {
   console.log(element);
 });
 
-app.get("/productoRandom", async (req, res) => {
+routerProducts.get("/productoRandom", async (req, res) => {
   let response;
   try {
     let min = 1;
@@ -94,7 +105,7 @@ app.get("/productoRandom", async (req, res) => {
   res.json(response);
 });
 
-app.delete("/productos/:id", async (req, res) => {
+routerProducts.delete("/productos/:id", async (req, res) => {
   let response;
   try {
     const id = parseInt(req.params.id);
