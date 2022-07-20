@@ -2,12 +2,12 @@ import FileManager from "./FileManager.js";
 import express from "express";
 import path from 'path';
 import { fileURLToPath } from 'url';
-import bodyParser from'body-parser';
+
 
 const fileManager = new FileManager("productos.txt");
 
 
-
+const __dirname = fileURLToPath(import.meta.url);
 const app = express();
 app.use(express.json());
 const routerProducts = express.Router();
@@ -25,7 +25,7 @@ routerProducts.use("/",express.static('public'));
 
 routerProducts.get("/", (req, res) => {
 
-  res.sendFile("/public/index.html")
+  res.sendFile(__dirname+"/public/index.html")
 
 }); 
 
