@@ -142,6 +142,13 @@ routerProducts.delete("/productos/:id", async (req, res) => {
   }
 });
 
+
+routerProducts.get('/download', function(req, res){
+  const file = `./public/PRODUCTS - API REST.postman_collection.json`;
+  res.download(file); // Set disposition and send it.
+});
+
+
 const listener = app.listen(PORT, () => {
   console.log(`Server escuchando ${listener.address().port}`);
 });
