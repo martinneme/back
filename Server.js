@@ -60,7 +60,6 @@ routerProducts.post("/productosadd", async (req, res) => {
   let response;
   try {
     const add = req.body;
-    console.log(add.title)
     response = await fileManager.save(add);
   } catch (e) {
     console.error(e);
