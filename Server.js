@@ -17,6 +17,7 @@ const PORT = process.env.PORT || 8080;
 
 routerProducts.use(express.urlencoded({ extended: true }));
 routerProducts.use("/",express.static('public'));
+routerProducts.use("/productadd.html",express.static('public'));
 
 
 
@@ -26,7 +27,9 @@ routerProducts.get("/", (req, res) => {
 
   res.sendFile("/public/index.html")
 
-});
+}); 
+
+
 
 routerProducts.get("/productos", async (req, res) => {
   let response;
