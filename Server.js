@@ -29,11 +29,6 @@ routerProducts.get("/", (req, res) => {
 
 }); 
 
-routerProducts.get("/productadd.html", (req, res) => {
-
-  res.sendFile("/public/productadd.html")
-
-}); 
 
 
 
