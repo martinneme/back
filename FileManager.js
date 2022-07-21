@@ -15,7 +15,7 @@ export default class FileManager{
    const cont = await JSON.parse(content)
    cont.length ? obj.id = await this.lastId(): obj.id=1;
    cont.push(obj)
-   this.writeFile(JSON.stringify(cont))
+   await this.writeFile(JSON.stringify(cont))
    return obj.id
   }catch(e){
     
@@ -95,7 +95,7 @@ async getAll(){
 async deleteAll(){
   try{
         if(await this.readFile()){
-                this.writeFile(JSON.stringify([]))
+              await this.writeFile(JSON.stringify([]))
         }
      
   }catch(e){
