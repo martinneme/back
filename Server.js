@@ -2,9 +2,12 @@ import FileManager from "./FileManager.js";
 import express from "express";
 import path from 'path';
 import { fileURLToPath } from 'url';
-
+import handlebars from "express-handlebars";
 
 const fileManager = new FileManager("productos.txt");
+
+
+
 
 
 const __dirname = fileURLToPath(import.meta.url);
@@ -14,12 +17,28 @@ const routerProducts = express.Router();
 app.use(routerProducts);
 const PORT = process.env.PORT || 8080;
 
+const hbs = handlebars.create({
+  extname: ".hbs",
+  defaultLayout: "index.hbs",
+  layoutsDir:  "./views/",
+  partialsDir:"/views/partials/"
+});
+
+const form = {
+  title:"titulo",
+price:"Precio",
+link:"Link",
+endpoint:"/productos"
+}
+
 
 routerProducts.use(express.urlencoded({ extended: true }));
 routerProducts.use("/",express.static('public'));
 
 
-
+app.engine("hbs", hbs.engine);
+app.set("view engine", "hbs");
+app.set("views", "./views");
 
 
 
@@ -41,7 +60,7 @@ routerProducts.get("/productos", async (req, res) => {
     res.status(404)
   }
   res.status(200)
-  res.json(response);
+res.render('index',{form,response})
 });
 
 routerProducts.get("/productos/:id", async (req, res) => {
@@ -60,7 +79,7 @@ routerProducts.get("/productos/:id", async (req, res) => {
   res.json(response);
 });
 
-routerProducts.post("/productosadd", async (req, res) => {
+routerProducts.post("/productos", async (req, res) => {
   let response;
   try {
     const add = req.body;
@@ -69,7 +88,7 @@ routerProducts.post("/productosadd", async (req, res) => {
     console.error(e);
   }
 
-  res.json(response);
+  res.redirect('/productos');
 });
 
 routerProducts.put("/productos/update/:id", async (req, res) => {
