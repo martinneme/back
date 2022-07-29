@@ -1,0 +1,26 @@
+
+html
+  head
+    link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous")
+  body
+    fieldset(class="container" style="margin:5%")
+      form(class="form-group" action=form.endpoint method="POST")
+        label=form.title
+        input(type="text" name="title")
+        label=form.price
+        input(type="text" name="price")
+        label=form.link
+        input(type="text" name="link")
+        button(class="btn btn-primary")="enviar"
+    div
+      table(class="table")
+        tr
+          th(class="text-center")="Titulo"
+          th(class="text-center")="Precio"
+          th(class="text-center")="Link"
+        each i in response
+          tr
+            td(class="text-center")=i.title
+            td(class="text-center")=i.price
+            td(class="text-center")
+              img(src=i.link width="10%")
