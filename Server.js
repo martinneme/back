@@ -1,7 +1,7 @@
 import FileManager from "./FileManager.js";
 import express from "express";
-import path from 'path';
 import { fileURLToPath } from 'url';
+import ejs from "ejs";
 
 const fileManager = new FileManager("productos.txt");
 
@@ -26,8 +26,8 @@ routerProducts.use(express.urlencoded({ extended: true }));
 routerProducts.use("/",express.static('public'));
 
 
-app.set('view engine', 'pug');
-app.set('views', './views');
+app.set('view engine', 'ejs');
+
 
 
 
