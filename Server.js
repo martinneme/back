@@ -1,6 +1,5 @@
 import FileManager from "./FileManager.js";
 import express from "express";
-import path from 'path';
 import { fileURLToPath } from 'url';
 import handlebars from "express-handlebars";
 
@@ -21,7 +20,7 @@ const hbs = handlebars.create({
   extname: ".hbs",
   defaultLayout: "index.hbs",
   layoutsDir:  "./views/",
-  partialsDir:"/views/partials/"
+  partialsDir:"./views/"
 });
 
 const form = {
@@ -33,7 +32,6 @@ endpoint:"/productos"
 
 
 routerProducts.use(express.urlencoded({ extended: true }));
-routerProducts.use("/",express.static('public'));
 
 
 app.engine("hbs", hbs.engine);
@@ -44,10 +42,9 @@ app.set("views", "./views");
 
 routerProducts.get("/", (req, res) => {
 
-  res.sendFile(__dirname+"/public/index.html")
+  res.render('index',{form})
 
 }); 
-
 
 
 
@@ -59,25 +56,11 @@ routerProducts.get("/productos", async (req, res) => {
     console.error(e);
     res.status(404)
   }
-  res.status(200)
-res.render('index',{form,response})
+  res.status(200).render('productget',{response})
+
 });
 
-routerProducts.get("/productos/:id", async (req, res) => {
-  
-  let response;
-  try {
-    const id = parseInt(req.params.id);
-    response = await fileManager.getById(id);
-    if(response === null){
-      throw new Error('Id no existe')
-    }
-  } catch (e) {
-    console.error(e);
-    res.status(404)
-  }
-  res.json(response);
-});
+
 
 routerProducts.post("/productos", async (req, res) => {
   let response;
