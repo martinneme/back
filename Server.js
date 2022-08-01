@@ -23,7 +23,7 @@ endpoint:"/productos"
 
 
 routerProducts.use(express.urlencoded({ extended: true }));
-routerProducts.use("/",express.static('public'));
+
 
 
 app.set('view engine', 'ejs');
@@ -33,7 +33,7 @@ app.set('view engine', 'ejs');
 
 routerProducts.get("/", (req, res) => {
 
-  res.sendFile(__dirname+"/public/index.html")
+  res.render('index',{form})
 
 }); 
 
@@ -49,7 +49,7 @@ routerProducts.get("/productos", async (req, res) => {
     res.status(404)
   }
   res.status(200)
-res.render('index',{form,response})
+res.render('productosget',{response})
 });
 
 routerProducts.get("/productos/:id", async (req, res) => {
