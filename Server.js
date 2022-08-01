@@ -23,7 +23,7 @@ endpoint:"/productos"
 
 
 routerProducts.use(express.urlencoded({ extended: true }));
-routerProducts.use("/",express.static('public'));
+
 
 
 app.set('view engine', 'pug');
@@ -33,10 +33,9 @@ app.set('views', './views');
 
 routerProducts.get("/", (req, res) => {
 
-  res.sendFile(__dirname+"/public/index.html")
+  res.render('index',{form})
 
 }); 
-
 
 
 
@@ -49,24 +48,10 @@ routerProducts.get("/productos", async (req, res) => {
     res.status(404)
   }
   res.status(200)
-res.render('index',{form,response})
+res.render('productget',{response})
 });
 
-routerProducts.get("/productos/:id", async (req, res) => {
-  
-  let response;
-  try {
-    const id = parseInt(req.params.id);
-    response = await fileManager.getById(id);
-    if(response === null){
-      throw new Error('Id no existe')
-    }
-  } catch (e) {
-    console.error(e);
-    res.status(404)
-  }
-  res.json(response);
-});
+
 
 routerProducts.post("/productos", async (req, res) => {
   let response;
