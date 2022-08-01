@@ -1,5 +1,6 @@
 import FileManager from "./FileManager.js";
 import express from "express";
+import path from 'path';
 import { fileURLToPath } from 'url';
 import handlebars from "express-handlebars";
 
@@ -17,10 +18,9 @@ app.use(routerProducts);
 const PORT = process.env.PORT || 8080;
 
 const hbs = handlebars.create({
-  extname: ".hbs",
-  defaultLayout: "index.hbs",
-  layoutsDir:  "./views/",
-  partialsDir:"./views/"
+  extname: '.hbs',
+  defaultLayout: 'index',
+  layoutsDir: path.join(__dirname, '../views/layouts')
 });
 
 const form = {
@@ -29,6 +29,7 @@ price:"Precio",
 link:"Link",
 endpoint:"/productos"
 }
+
 
 
 routerProducts.use(express.urlencoded({ extended: true }));
@@ -42,7 +43,7 @@ app.set("views", "./views");
 
 routerProducts.get("/", (req, res) => {
 
-  res.render('index',{form})
+  res.render('main',{form})
 
 }); 
 

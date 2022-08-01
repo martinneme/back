@@ -1,0 +1,14 @@
+    <fieldset class="container" style="margin:5%">
+      <form class="form-group" action={{form.endpoint}} method="POST">
+        {{form.title}}:
+        <input type="text" name="title" />
+        {{form.price}}:
+        <input type="text" name="price" />
+        {{form.link}}:
+        <input type="text" name="link" />
+        <button class="btn btn-primary">Enviar</button>
+      </form>
+    </fieldset>
+    <div>
+          <button class="btn btn-primary" onclick="window.location.href='/productos'">List Products</button>
+    </div>
