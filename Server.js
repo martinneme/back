@@ -3,15 +3,23 @@ import express from "express";
 import path from 'path';
 import { fileURLToPath } from 'url';
 import handlebars from "express-handlebars";
+import {Server as HTTPServer} from 'http'
+import {Server as SocketServer} from 'socket.io'
 
 const fileManager = new FileManager("productos.txt");
 
-
+const messages = [];
 
 
 
 const __dirname = fileURLToPath(import.meta.url);
 const app = express();
+
+//SOCKETS
+const httpServer = new HTTPServer(app);
+const socketServer = new SocketServer(httpServer)
+
+app.use(express.static("public"));
 app.use(express.json());
 const routerProducts = express.Router();
 app.use(routerProducts);
@@ -41,15 +49,13 @@ app.set("views", "./views");
 
 
 
-routerProducts.get("/", (req, res) => {
-
-  res.render('main',{form})
-
-}); 
 
 
 
-routerProducts.get("/productos", async (req, res) => {
+
+
+
+routerProducts.get("/", async (req, res) => {
   let response;
   try {
     response = await fileManager.getAll();
@@ -57,7 +63,7 @@ routerProducts.get("/productos", async (req, res) => {
     console.error(e);
     res.status(404)
   }
-  res.status(200).render('productget',{response})
+  res.status(200).render('main',{form,response})
 
 });
 
@@ -72,12 +78,25 @@ routerProducts.post("/productos", async (req, res) => {
     console.error(e);
   }
 
-  res.redirect('/productos');
+  res.redirect('/');
 });
 
 
 
-const listener = app.listen(PORT, () => {
+socketServer.on("connection",(socket)=>{
+  socket.emit("INIT",messages);
+
+
+  socket.on("POST_MESSAGE",(msg)=>{
+    messages.push(msg);
+    socketServer.sockets.emit("NEW_MESSAGE",msg)
+  })
+})
+
+
+
+
+const listener = httpServer.listen(PORT, () => {
   console.log(`Server escuchando ${listener.address().port}`);
 });
 

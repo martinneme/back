@@ -2,3 +2,15 @@ body{
     margin: 5%;
 }
 
+.chatContainer{
+    display: flex;
+justify-content: center;
+
+}
+
+.sendMessage{
+display: flex;
+justify-content: center;
+flex-direction: column;
+width: 50%;
+}
