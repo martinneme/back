@@ -3,10 +3,10 @@ const socket = io();
 
 
 function sendMessage(){
-    const name = document.getElementById("name").value
+    const email = document.getElementById("email").value
     const message = document.getElementById("message").value
 
-    socket.emit("POST_MESSAGE",{name,message})
+    socket.emit("POST_MESSAGE",{email,message})
 }
 
 
@@ -16,7 +16,10 @@ appendMessage(msg);
 })
 
  function appendMessage(msg){
-   const newMessage=`<p>${msg.name}: ${msg.message}</p>`
+    const dateTime = new Date();
+    const fecha = dateTime.getDate() + '-' + ( dateTime.getMonth() + 1 ) + '-' + dateTime.getFullYear();
+    const hora = dateTime.getHours() + ':' + dateTime.getMinutes() + ':' + dateTime.getSeconds();
+   const newMessage=`<div class="lineMessage"><p style="color:#405EF7">${msg.email}</p><p style="color:#906840">[${fecha} ${hora} ]: </p><p style="color:#71EB7A">${msg.message}</p><div>`
     document.getElementById("messages").innerHTML+=newMessage;
 }
 

@@ -6,7 +6,7 @@ import handlebars from "express-handlebars";
 import {Server as HTTPServer} from 'http'
 import {Server as SocketServer} from 'socket.io'
 
-const fileManager = new FileManager("productos.txt");
+const fileManager = new FileManager("./db/productos.json");
 
 const messages = [];
 
@@ -45,13 +45,7 @@ routerProducts.use(express.urlencoded({ extended: true }));
 
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
-app.set("views", "./views");
-
-
-
-
-
-
+app.set("views", "./src/views");
 
 
 
@@ -89,6 +83,7 @@ socketServer.on("connection",(socket)=>{
 
   socket.on("POST_MESSAGE",(msg)=>{
     messages.push(msg);
+  
     socketServer.sockets.emit("NEW_MESSAGE",msg)
   })
 })
