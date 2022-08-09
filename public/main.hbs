@@ -1,0 +1,19 @@
+   
+    <div>
+         <div>
+      <table class="table">
+          <tr>
+            <th class="text-center">Titulo</th>
+            <th class="text-center">Precio</th>
+            <th class="text-center">imagen</th>
+          </tr> 
+          {{#each response}}
+          <tr>
+            <td class="text-center">{{this.title}}</td>
+            <td class="text-center">{{this.price}}</td>
+            <td class="text-center"><img src={{this.link}} width="10%"></td>
+          </tr>
+        {{/each}}
+      </table>
+    </div>
+    </div>

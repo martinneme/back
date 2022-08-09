@@ -50,42 +50,33 @@ app.set("views", "./src/views");
 
 
 routerProducts.get("/", async (req, res) => {
-  let response;
-  try {
-    response = await fileManager.getAll();
-  } catch (e) {
-    console.error(e);
-    res.status(404)
-  }
-  res.status(200).render('main',{form,response})
+
+  res.sendFile(path.join(__dirname, '../../public/index.hbs'));
 
 });
 
 
 
-routerProducts.post("/productos", async (req, res) => {
-  let response;
-  try {
-    const add = req.body;
-    response = await fileManager.save(add);
-  } catch (e) {
-    console.error(e);
-  }
-
-  res.redirect('/');
-});
-
-
-
-socketServer.on("connection",(socket)=>{
+socketServer.on("connection",async (socket)=>{
   socket.emit("INIT",messages);
 
+
+socket.emit("PRODUCTS",await fileManager.getAll())
+ 
+socket.on("PRODUCT_ADDED",async(obj)=>{
+  fileManager.save(obj)
+  socketServer.sockets.emit("PRODUCT_ADDED",await fileManager.getAll())
+})
 
   socket.on("POST_MESSAGE",(msg)=>{
     messages.push(msg);
   
     socketServer.sockets.emit("NEW_MESSAGE",msg)
   })
+
+
+
+
 })
 
 

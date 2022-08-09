@@ -1,12 +1,32 @@
 
+
 const socket = io();
 
+const addprod = document.querySelector('#send')
+
+addprod.addEventListener('submit',(e)=>{
+  e.preventDefault();
+
+  const title = document.getElementById("title").value;
+const price = document.getElementById("price").value;
+const link = document.getElementById("link").value;
+
+const prod = {
+  "title": title,
+  "price": price,
+  "link":link
+}
+socket.emit("PRODUCT_ADDED",prod)
+
+addprod.reset();
+})
 
 function sendMessage(){
     const email = document.getElementById("email").value
     const message = document.getElementById("message").value
 
     socket.emit("POST_MESSAGE",{email,message})
+   
 }
 
 
@@ -27,8 +47,23 @@ appendMessage(msg);
 socket.on("INIT",(messages)=>{
 
     for(let msg of messages){
-
+     
          appendMessage(msg)
     }
  
 })
+
+
+socket.on("PRODUCTS", (response) => {
+
+    const url = "http://localhost:8080/main.hbs";
+      fetch(url).then((resp) => {
+        console.log(resp);
+        return resp.text();
+    }).then((text) => {
+      const template = Handlebars.compile(text);
+      const html = template({response});
+      console.log(html)
+      document.querySelector("#products").innerHTML = html;
+    });
+  })
