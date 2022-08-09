@@ -26,6 +26,9 @@ function sendMessage(){
     const message = document.getElementById("message").value
 
     socket.emit("POST_MESSAGE",{email,message})
+
+    
+    document.getElementById("message").value=""
    
 }
 
@@ -36,10 +39,8 @@ appendMessage(msg);
 })
 
  function appendMessage(msg){
-    const dateTime = new Date();
-    const fecha = dateTime.getDate() + '-' + ( dateTime.getMonth() + 1 ) + '-' + dateTime.getFullYear();
-    const hora = dateTime.getHours() + ':' + dateTime.getMinutes() + ':' + dateTime.getSeconds();
-   const newMessage=`<div class="lineMessage"><p style="color:#405EF7">${msg.email}</p><p style="color:#906840">[${fecha} ${hora} ]: </p><p style="color:#71EB7A">${msg.message}</p><div>`
+ 
+   const newMessage=`<div class="lineMessage"><p style="color:#405EF7">${msg.email}</p><p style="color:#906840">[${msg.dateTime}]: </p><p style="color:#71EB7A">${msg.message}</p><div>`
     document.getElementById("messages").innerHTML+=newMessage;
 }
 
@@ -54,16 +55,13 @@ socket.on("INIT",(messages)=>{
 })
 
 
-socket.on("PRODUCTS", (response) => {
-
+socket.on("PRODUCTS", async (response) => {
     const url = "http://localhost:8080/main.hbs";
       fetch(url).then((resp) => {
-        console.log(resp);
         return resp.text();
     }).then((text) => {
       const template = Handlebars.compile(text);
       const html = template({response});
-      console.log(html)
       document.querySelector("#products").innerHTML = html;
     });
   })

@@ -7,6 +7,7 @@ import {Server as HTTPServer} from 'http'
 import {Server as SocketServer} from 'socket.io'
 
 const fileManager = new FileManager("./db/productos.json");
+const messagesFileManager = new FileManager("./db/mensajes.json");
 
 const messages = [];
 
@@ -58,19 +59,23 @@ routerProducts.get("/", async (req, res) => {
 
 
 socketServer.on("connection",async (socket)=>{
-  socket.emit("INIT",messages);
+  socket.emit("INIT",await messagesFileManager.getAll());
 
 
 socket.emit("PRODUCTS",await fileManager.getAll())
  
 socket.on("PRODUCT_ADDED",async(obj)=>{
-  fileManager.save(obj)
-  socketServer.sockets.emit("PRODUCT_ADDED",await fileManager.getAll())
+  await fileManager.save(obj)
+  socketServer.sockets.emit("PRODUCTS",await fileManager.getAll())
 })
 
-  socket.on("POST_MESSAGE",(msg)=>{
+  socket.on("POST_MESSAGE",async (msg)=>{
+    const dateTime = new Date();
+    const fecha = dateTime.getDate() + '-' + ( dateTime.getMonth() + 1 ) + '-' + dateTime.getFullYear();
+    const hora = dateTime.getHours() + ':' + dateTime.getMinutes() + ':' + dateTime.getSeconds();
+    msg.dateTime=fecha+" "+hora;
     messages.push(msg);
-  
+    await messagesFileManager.save(msg);
     socketServer.sockets.emit("NEW_MESSAGE",msg)
   })
 
