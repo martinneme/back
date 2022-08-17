@@ -1,52 +1,70 @@
 [{
     "id": 1,
     "productos": [{
-            "nombre": "testName",
-            "descripcion": "negro",
-            "codigo": "345",
-            "url": "http://link55",
-            "precio": 154,
-            "stock": 2,
-            "timeStamp": "16-8-2022 17:38:47",
-            "id": 1
-        },
-        {
-            "nombre": "testName2",
-            "descripcion": "blanco",
-            "codigo": "344",
-            "url": "http://link54",
-            "precio": 153,
-            "stock": 5,
-            "timeStamp": "16-8-2022 17:38:47",
-            "id": 2
-        }
-
-
-    ]
-},
-{
+        "nombre": "testName",
+        "descripcion": "negro",
+        "codigo": "345",
+        "url": "http://link55",
+        "precio": 154,
+        "stock": 2,
+        "timeStamp": "16-8-2022 17:38:47",
+        "id": 1
+    }, {
+        "nombre": "testName2",
+        "descripcion": "blanco",
+        "codigo": "344",
+        "url": "http://link54",
+        "precio": 153,
+        "stock": 5,
+        "timeStamp": "16-8-2022 17:38:47",
+        "id": 2
+    }, {
+        "nombre": "testName3",
+        "descripcion": "negro3",
+        "codigo": "345",
+        "url": "http://link55",
+        "precio": 154,
+        "stock": 2,
+        "timeStamp": "16-8-2022 17:38:47",
+        "id": 3
+    }]
+}, {
     "id": 2,
     "productos": [{
-            "nombre": "test3",
-            "descripcion": "negro",
-            "codigo": "345",
-            "url": "http://link55",
-            "precio": 154,
-            "stock": 2,
-            "timeStamp": "16-8-2022 17:38:47",
-            "id": 1
-        },
-        {
-            "nombre": "test4",
-            "descripcion": "blanco",
-            "codigo": "344",
-            "url": "http://link54",
-            "precio": 153,
-            "stock": 5,
-            "timeStamp": "16-8-2022 17:38:47",
-            "id": 2
-        }
-
-
-    ]
+        "nombre": "test3",
+        "descripcion": "negro",
+        "codigo": "345",
+        "url": "http://link55",
+        "precio": 154,
+        "stock": 2,
+        "timeStamp": "16-8-2022 17:38:47",
+        "id": 1
+    }, {
+        "nombre": "test4",
+        "descripcion": "blanco",
+        "codigo": "344",
+        "url": "http://link54",
+        "precio": 153,
+        "stock": 5,
+        "timeStamp": "16-8-2022 17:38:47",
+        "id": 2
+    }, {
+        "nombre": "testName3",
+        "descripcion": "negro3",
+        "codigo": "345",
+        "url": "http://link55",
+        "precio": 154,
+        "stock": 2,
+        "timeStamp": "16-8-2022 17:38:47",
+        "id": 3
+    }, {
+        "nombre": "testName2",
+        "descripcion": "negro2",
+        "codigo": "345",
+        "url": "http://link55",
+        "precio": 154,
+        "stock": 2,
+        "timeStamp": "16-8-2022 17:38:47",
+        "id": 2
+    }]
 }]

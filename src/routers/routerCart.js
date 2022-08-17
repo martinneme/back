@@ -1,19 +1,19 @@
 import express from "express";
 import FileManager from "../../FileManager.js";
 
-const routerCart= express.Router();
+const routerCart = express.Router();
 routerCart.use(express.urlencoded({ extended: true }));
 const CartfileManager = new FileManager("./db/cart.json");
+const fileManager = new FileManager("./db/productos.json");
 
 routerCart.get("/:id/productos", async (req, res) => {
   let response;
   try {
     const id = parseInt(req.params.id);
-      response = await CartfileManager.getById(id);
-      if (response === null) {
-        throw new Error("Id no existe");
-      }
-    
+    response = await CartfileManager.getById(id);
+    if (response === null) {
+      throw new Error("Id no existe");
+    }
   } catch (e) {
     console.error(e);
     res.status(404);
@@ -35,37 +35,31 @@ routerCart.post("/", async (req, res) => {
   res.json(response);
 });
 
-routerCart.put("/:id", async (req, res) => {
+routerCart.post("/:id/productos", async (req, res) => {
   let element;
   try {
     const id = parseInt(req.params.id);
-    const update = req.body;
-    const allElements = await fileManager.getAll();
-    element = allElements.find((ele) => ele.id === id);
-    if (element) {
-      if (update.nombre && element.nombre != update.nombre)
-        element["nombre"] = update.nombre;
-      if (update.descripcion && element.descripcion != update.descripcion)
-        element["descripcion"] = update.descripcion;
-      if (update.codigo && element.codigo != update.codigo)
-        element["codigo"] = update.codigo;
-      if (update.url && element.url != update.url) element["url"] = update.url;
-      if (update.precio && element.precio != update.precio)
-        element["precio"] = update.precio;
-      if (update.stock && element.stock != update.stock)
-        element["stock"] = update.stock;
-    }
+    const productsAdd = req.body;
+    const cartAllElements = await CartfileManager.getAll();
+    const productsDB = await fileManager.getAll();
+    const elementCart = cartAllElements.find((ele) => ele.id === id);
 
-    fileManager.writeFile(JSON.stringify([...allElements]));
+    productsAdd.productos.forEach((idProd) => {
+      if (elementCart) {
+        const prod = productsDB.find((ele) => ele.id === idProd);
+        if (prod) elementCart.productos.push(prod);
+      }
+    });
+
+    CartfileManager.writeFile(JSON.stringify([...cartAllElements]));
     res.json({
       update: "ok",
       id: req.params.id,
-      newElement: element,
+      newProducts: productsAdd,
     });
   } catch (e) {
     console.error(e);
   }
-
 });
 
 routerCart.delete("/:id", async (req, res) => {
@@ -93,6 +87,5 @@ routerCart.delete("/:id", async (req, res) => {
     console.error(e);
   }
 });
-
 
 export default routerCart;
