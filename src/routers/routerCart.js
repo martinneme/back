@@ -1,56 +1,33 @@
 import express from "express";
 import FileManager from "../../FileManager.js";
 
-const routerProducts = express.Router();
-routerProducts.use(express.urlencoded({ extended: true }));
-const fileManager = new FileManager("./db/productos.json");
+const routerCart= express.Router();
+routerCart.use(express.urlencoded({ extended: true }));
+const CartfileManager = new FileManager("./db/cart.json");
 
-routerProducts.get("/:id", async (req, res) => {
+routerCart.get("/:id/productos", async (req, res) => {
   let response;
   try {
     const id = parseInt(req.params.id);
-    if (id) {
-      response = await fileManager.getById(id);
+      response = await CartfileManager.getById(id);
       if (response === null) {
         throw new Error("Id no existe");
       }
-    } else {
-      response = await fileManager.getAll();
-    }
+    
   } catch (e) {
     console.error(e);
     res.status(404);
   }
+
   res.json(response);
 });
 
-routerProducts.post("/", async (req, res) => {
+routerCart.post("/", async (req, res) => {
   let response;
-  const dateTime = new Date();
-  const fecha =
-    dateTime.getDate() +
-    "-" +
-    (dateTime.getMonth() + 1) +
-    "-" +
-    dateTime.getFullYear();
-  const hora =
-    dateTime.getHours() +
-    ":" +
-    dateTime.getMinutes() +
-    ":" +
-    dateTime.getSeconds();
   try {
     const { nombre, descripcion, codigo, url, precio, stock } = req.body;
-    const add = {
-      nombre,
-      descripcion,
-      codigo,
-      url,
-      precio,
-      stock,
-      timeStamp: fecha + " " + hora,
-    };
-    response = await fileManager.save(add);
+    const add = {};
+    response = await CartfileManager.save(add);
   } catch (e) {
     console.error(e);
   }
@@ -58,7 +35,7 @@ routerProducts.post("/", async (req, res) => {
   res.json(response);
 });
 
-routerProducts.put("/:id", async (req, res) => {
+routerCart.put("/:id", async (req, res) => {
   let element;
   try {
     const id = parseInt(req.params.id);
@@ -91,15 +68,15 @@ routerProducts.put("/:id", async (req, res) => {
 
 });
 
-routerProducts.delete("/:id", async (req, res) => {
+routerCart.delete("/:id", async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    const allElements = await fileManager.getAll();
+    const allElements = await CartfileManager.getAll();
     const element = allElements.find((ele) => ele.id === id);
     const index = allElements.indexOf(element);
     if (index != -1) {
       allElements.splice(index, 1);
-      fileManager.writeFile(JSON.stringify([...allElements]));
+      CartfileManager.writeFile(JSON.stringify([...allElements]));
       res.json({
         Delete: "ok",
         id: req.params.id,
@@ -117,9 +94,5 @@ routerProducts.delete("/:id", async (req, res) => {
   }
 });
 
-// routerProducts.get("/download", function (req, res) {
-//   const file = `./public/PRODUCTS - API REST.postman_collection.json`;
-//   res.download(file); // Set disposition and send it.
-// });
 
-export default routerProducts;
+export default routerCart;
