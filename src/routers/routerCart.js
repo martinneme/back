@@ -36,7 +36,6 @@ routerCart.post("/", async (req, res) => {
 });
 
 routerCart.post("/:id/productos", async (req, res) => {
-  let element;
   try {
     const id = parseInt(req.params.id);
     const productsAdd = req.body;
@@ -87,5 +86,34 @@ routerCart.delete("/:id", async (req, res) => {
     console.error(e);
   }
 });
+
+
+routerCart.delete("/:id/productos/:id_prod", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const idProd = parseInt(req.params.id_prod);
+      const cartAllElements = await CartfileManager.getAll();
+      const elementCart = cartAllElements.find((ele) => ele.id === id);
+      const prod = elementCart.productos.find((ele) => ele.id === idProd);
+      const index = elementCart.productos.indexOf(prod);
+      if (index != -1) {
+        elementCart.productos.splice(index, 1);
+        CartfileManager.writeFile(JSON.stringify([...cartAllElements]));
+        res.json({
+          Delete: "ok",
+          idCart: req.params.id,
+          ElementDelete: prod,
+        });
+      } else {
+        res.json({
+          Delete: `Error, ID: ${id} no existe`,
+          id: req.params.id,
+          ElementDelete: null,
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  });
 
 export default routerCart;
