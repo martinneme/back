@@ -1,5 +1,6 @@
 import express from "express";
 import FileManager from "../../FileManager.js";
+import { isAutoricated } from "../utils/isAdmin.js";
 
 const routerProducts = express.Router();
 routerProducts.use(express.urlencoded({ extended: true }));
@@ -24,7 +25,7 @@ routerProducts.get("/:id", async (req, res) => {
   res.json(response);
 });
 
-routerProducts.post("/", async (req, res) => {
+routerProducts.post("/",isAutoricated, async (req, res) => {
   let response;
   const dateTime = new Date();
   const fecha =
@@ -58,7 +59,7 @@ routerProducts.post("/", async (req, res) => {
   res.json(response);
 });
 
-routerProducts.put("/:id", async (req, res) => {
+routerProducts.put("/:id",isAutoricated, async (req, res) => {
   let element;
   try {
     const id = parseInt(req.params.id);
@@ -91,7 +92,7 @@ routerProducts.put("/:id", async (req, res) => {
 
 });
 
-routerProducts.delete("/:id", async (req, res) => {
+routerProducts.delete("/:id",isAutoricated, async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const allElements = await fileManager.getAll();
@@ -117,9 +118,9 @@ routerProducts.delete("/:id", async (req, res) => {
   }
 });
 
-// routerProducts.get("/download", function (req, res) {
-//   const file = `./public/PRODUCTS - API REST.postman_collection.json`;
-//   res.download(file); // Set disposition and send it.
-// });
+routerProducts.get("/download", function (req, res) {
+  const file = `./public/Primera Entrega-ecommerce.postman_collection.json`;
+  res.download(file); // Set disposition and send it.
+});
 
 export default routerProducts;

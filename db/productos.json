@@ -1,31 +1,37 @@
 [{
-        "nombre": "testName",
-        "descripcion": "negro",
-        "codigo": "345",
-        "url": "http://link55",
-        "precio": 154,
-        "stock": 2,
-        "timeStamp": "16-8-2022 17:38:47",
-        "id": 1
-    },
-    {
-        "nombre": "testName2",
-        "descripcion": "negro2",
-        "codigo": "345",
-        "url": "http://link55",
-        "precio": 154,
-        "stock": 2,
-        "timeStamp": "16-8-2022 17:38:47",
-        "id": 2
-    },
-    {
-        "nombre": "testName3",
-        "descripcion": "negro3",
-        "codigo": "345",
-        "url": "http://link55",
-        "precio": 154,
-        "stock": 2,
-        "timeStamp": "16-8-2022 17:38:47",
-        "id": 3
-    }
-]
+    "nombre": "TESTADD-ADMIN-TRUE",
+    "descripcion": "negro3",
+    "codigo": "345",
+    "url": "http://link55",
+    "precio": 358,
+    "stock": 2,
+    "timeStamp": "16-8-2022 17:38:47",
+    "id": 1
+}, {
+    "nombre": "testName2",
+    "descripcion": "negro2",
+    "codigo": "345",
+    "url": "http://link55",
+    "precio": 154,
+    "stock": 2,
+    "timeStamp": "16-8-2022 17:38:47",
+    "id": 2
+}, {
+    "nombre": "testName3",
+    "descripcion": "negro3",
+    "codigo": "345",
+    "url": "http://link55",
+    "precio": 154,
+    "stock": 2,
+    "timeStamp": "16-8-2022 17:38:47",
+    "id": 3
+}, {
+    "nombre": "TESTADD-ADMIN-TRUE",
+    "descripcion": "negro3",
+    "codigo": "345",
+    "url": "http://link55",
+    "precio": 154,
+    "stock": 2,
+    "timeStamp": "18-8-2022 14:9:47",
+    "id": 4
+}]
