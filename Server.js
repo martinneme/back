@@ -7,13 +7,23 @@ import { fileURLToPath } from 'url';
 
 
 
-
+const PORT = process.env.PORT || 8080;
 const __dirname = fileURLToPath(import.meta.url);
 const app = express();
 app.use(express.json());
 app.use("/api/productos",routerProducts);
 app.use("/api/carrito",routerCart);
-const PORT = process.env.PORT || 8080;
+app.use((req,res)=>{
+  const response = {
+    error:-1,
+    description:`${req.url} ${req.method} ruta no implementada`
+  }
+  res.status(404).json(response);
+})
+
+
+
+
 
 
 
