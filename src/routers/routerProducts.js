@@ -118,9 +118,6 @@ routerProducts.delete("/:id",isAutoricated, async (req, res) => {
   }
 });
 
-routerProducts.get("/download", function (req, res) {
-  const file = `./public/Primera Entrega-ecommerce.postman_collection.json`;
-  res.download(file); 
-});
+
 
 export default routerProducts;
