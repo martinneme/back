@@ -120,7 +120,7 @@ routerProducts.delete("/:id",isAutoricated, async (req, res) => {
 
 routerProducts.get("/download", function (req, res) {
   const file = `./public/Primera Entrega-ecommerce.postman_collection.json`;
-  res.download(file); // Set disposition and send it.
+  res.download(file); 
 });
 
 export default routerProducts;
