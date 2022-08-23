@@ -1,10 +1,10 @@
 
 
-import  fs from "fs";
+const  fs =require("fs");
 
 
 
-export default class FileManager{
+class FileManager{
   constructor(pathFile){
     this.pathFile=pathFile;
   }
@@ -161,3 +161,4 @@ const obj = { title: 'AddTitleTest', price: 63500, thumbnail: 'http://link4' }
 //  test.getAll()
 // test.deleteAll()
 
+module.exports = FileManager;

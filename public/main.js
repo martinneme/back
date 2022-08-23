@@ -12,9 +12,9 @@ const price = document.getElementById("price").value;
 const link = document.getElementById("link").value;
 
 const prod = {
-  "title": title,
-  "price": price,
-  "link":link
+  "nombre": title,
+  "precio": price,
+  "url":link
 }
 socket.emit("PRODUCT_ADDED",prod)
 
@@ -40,7 +40,7 @@ appendMessage(msg);
 
  function appendMessage(msg){
  
-   const newMessage=`<div class="lineMessage"><p style="color:#405EF7">${msg.email}</p><p style="color:#906840">[${msg.dateTime}]: </p><p style="color:#71EB7A">${msg.message}</p><div>`
+   const newMessage=`<div class="lineMessage"><p style="color:#405EF7">${msg.email}</p><p style="color:#906840">[${msg.datetime}]: </p><p style="color:#71EB7A">${msg.message}</p><div>`
     document.getElementById("messages").innerHTML+=newMessage;
 }
 

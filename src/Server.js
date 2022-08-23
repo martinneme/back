@@ -1,24 +1,33 @@
-import FileManager from "./FileManager.js";
-import express from "express";
-import path from 'path';
-import { fileURLToPath } from 'url';
-import handlebars from "express-handlebars";
-import {Server as HTTPServer} from 'http'
-import {Server as SocketServer} from 'socket.io'
 
-const fileManager = new FileManager("./db/productos.json");
+const express =require("express") ;
+const path = require("path");
+const  fileURLToPath =require('url');
+const handlebars =  require("express-handlebars");
+const HTTPServer =  require('http');
+const SocketServer =  require('socket.io');
+const knex =  require('knex');
+const knexProductsConfig =  require("../knexfile.js");
+const FileManager = require('./FileManager')
+
+
+
+
+
+
+const databaseProducts = knex(knexProductsConfig);
+// const fileManager = new FileManager("./db/productos.json");
 const messagesFileManager = new FileManager("./db/mensajes.json");
 
 const messages = [];
 
 
 
-const __dirname = fileURLToPath(import.meta.url);
+// const __dirname = path.join(__dirname)
 const app = express();
 
 //SOCKETS
-const httpServer = new HTTPServer(app);
-const socketServer = new SocketServer(httpServer)
+const httpServer = new HTTPServer.Server(app);
+const socketServer = new SocketServer.Server(httpServer)
 
 app.use(express.static("public"));
 app.use(express.json());
@@ -59,30 +68,43 @@ routerProducts.get("/", async (req, res) => {
 
 
 socketServer.on("connection",async (socket)=>{
-  socket.emit("INIT",await messagesFileManager.getAll());
 
+try{
+    socket.emit("INIT",await databaseProducts('mensajes').select());
+socket.emit("PRODUCTS",await databaseProducts('productos').select())
+}catch{(e)=>{
+  console.error("error add"+e);
+}};
 
-socket.emit("PRODUCTS",await fileManager.getAll())
  
 socket.on("PRODUCT_ADDED",async(obj)=>{
-  await fileManager.save(obj)
-  socketServer.sockets.emit("PRODUCTS",await fileManager.getAll())
+  try{
+    await databaseProducts('productos').insert(obj)
+     socketServer.sockets.emit("PRODUCTS",await databaseProducts('productos').select())
+  }catch{(e)=>{
+    console.error("error add"+e);
+  }};
+
+ 
 })
 
   socket.on("POST_MESSAGE",async (msg)=>{
     const dateTime = new Date();
     const fecha = dateTime.getDate() + '-' + ( dateTime.getMonth() + 1 ) + '-' + dateTime.getFullYear();
     const hora = dateTime.getHours() + ':' + dateTime.getMinutes() + ':' + dateTime.getSeconds();
-    msg.dateTime=fecha+" "+hora;
-    messages.push(msg);
-    await messagesFileManager.save(msg);
-    socketServer.sockets.emit("NEW_MESSAGE",msg)
+    const ampm =  dateTime.getHours() >= 12 ? 'PM' : 'AM';
+    msg.dateTime=fecha+" "+hora+" "+ampm;
+    console.log(msg.dateTime);
+    // messages.push(msg);
+    // await messagesFileManager.save(msg);
+    await databaseProducts('mensajes').insert(msg);
+    socketServer.sockets.emit("NEW_MESSAGE",msg);
   })
 
 
-
-
 })
+
+
 
 
 

@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "Server.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/Server.js"
+    "start": "node src/Server.js",
+    "migrate": "npx knex migrate:latest",
+    "seed": "npx knex seed:run"
   },
   "repository": {
     "type": "git",
@@ -19,9 +20,12 @@
   },
   "homepage": "https://github.com/martinneme/back#readme",
   "dependencies": {
+    "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "express-handlebars": "^6.0.6",
+    "knex": "^2.2.0",
     "multer": "^1.4.5-lts.1",
+    "mysql": "^2.18.1",
     "socket.io": "^4.5.1"
   }
 }
