@@ -21,11 +21,11 @@ const knexProductsConfig ={
 },
 migrations:{
   tableName:'knex_migrations',
-  directory:'./migrations'
+  directory:'./db/migrations'
 },
 seeds:{
   tableName:'knex_seeds',
-  directory:'./seeds'
+  directory:'./db/seeds'
 }
 }
 

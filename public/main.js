@@ -35,12 +35,13 @@ function sendMessage(){
 
 socket.on("NEW_MESSAGE",(msg)=>{
 appendMessage(msg);
+
     
 })
 
  function appendMessage(msg){
  
-   const newMessage=`<div class="lineMessage"><p style="color:#405EF7">${msg.email}</p><p style="color:#906840">[${msg.datetime}]: </p><p style="color:#71EB7A">${msg.message}</p><div>`
+   const newMessage=`<div class="lineMessage"><p style="color:#405EF7">${msg.email}</p><p style="color:#906840">[${msg.datetime.replace("T"," ").slice(0,19)}]: </p><p style="color:#71EB7A">${msg.message}</p><div>`
     document.getElementById("messages").innerHTML+=newMessage;
 }
 

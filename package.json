@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/Server.js",
     "migrate": "npx knex migrate:latest",
-    "seed": "npx knex seed:run"
+    "seed": "npx knex seed:run",
+    "go": "npx knex migrate:latest && npx knex seed:run && npm start"
   },
   "repository": {
     "type": "git",

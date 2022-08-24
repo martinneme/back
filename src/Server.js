@@ -8,21 +8,12 @@ const SocketServer =  require('socket.io');
 const knex =  require('knex');
 const knexProductsConfig =  require("../knexfile.js");
 const FileManager = require('./FileManager')
+const routerProducts = require('./routers/routerProducts.js') 
 
 
-
-
-
-
+//INICIALIZACION BASE DE DATOS productos
 const databaseProducts = knex(knexProductsConfig);
-// const fileManager = new FileManager("./db/productos.json");
-const messagesFileManager = new FileManager("./db/mensajes.json");
 
-const messages = [];
-
-
-
-// const __dirname = path.join(__dirname)
 const app = express();
 
 //SOCKETS
@@ -31,7 +22,6 @@ const socketServer = new SocketServer.Server(httpServer)
 
 app.use(express.static("public"));
 app.use(express.json());
-const routerProducts = express.Router();
 app.use(routerProducts);
 const PORT = process.env.PORT || 8080;
 
@@ -48,22 +38,9 @@ link:"Link",
 endpoint:"/productos"
 }
 
-
-
-routerProducts.use(express.urlencoded({ extended: true }));
-
-
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 app.set("views", "./src/views");
-
-
-
-routerProducts.get("/", async (req, res) => {
-
-  res.sendFile(path.join(__dirname, '../../public/index.hbs'));
-
-});
 
 
 
@@ -89,16 +66,16 @@ socket.on("PRODUCT_ADDED",async(obj)=>{
 })
 
   socket.on("POST_MESSAGE",async (msg)=>{
-    const dateTime = new Date();
-    const fecha = dateTime.getDate() + '-' + ( dateTime.getMonth() + 1 ) + '-' + dateTime.getFullYear();
-    const hora = dateTime.getHours() + ':' + dateTime.getMinutes() + ':' + dateTime.getSeconds();
-    const ampm =  dateTime.getHours() >= 12 ? 'PM' : 'AM';
-    msg.dateTime=fecha+" "+hora+" "+ampm;
-    console.log(msg.dateTime);
-    // messages.push(msg);
-    // await messagesFileManager.save(msg);
-    await databaseProducts('mensajes').insert(msg);
-    socketServer.sockets.emit("NEW_MESSAGE",msg);
+    const dateTime = new Date().toISOString();
+    // const month = (dateTime.getMonth() + 1) >9 ?"0"+(dateTime.getMonth() + 1) : (dateTime.getMonth() + 1);
+    // const fecha = dateTime.getDate() + '-' + month + '-' + dateTime.getFullYear();
+    // const hora = dateTime.getHours() + ':' + dateTime.getMinutes() + ':' + dateTime.getSeconds();
+    // const ampm =  dateTime.getHours() >= 12 ? 'PM' : 'AM';
+    // const convert = fecha+" "+hora+" "+ampm;
+     msg.datetime=dateTime
+
+     databaseProducts('mensajes').insert(msg).then(()=>socketServer.sockets.emit("NEW_MESSAGE",msg));
+ 
   })
 
 
