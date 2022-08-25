@@ -1,5 +1,5 @@
 const knex = require("knex");
-const knexProductsConfig = require("../knexfile.js");
+const knexProductsConfig = require("../db/knexfile.js");
 const database = knex(knexProductsConfig);
 const fs = require("fs");
 

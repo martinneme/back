@@ -8,7 +8,7 @@
     "start": "node src/Server.js",
     "migrate": "npx knex migrate:latest",
     "seed": "npx knex seed:run",
-    "go": "npx knex migrate:latest && npx knex seed:run && npm start"
+    "go": "npx knex migrate:latest --knexfile ./db/knexfile && npx knex seed:run --knexfile ./db/knexfile && npm start"
   },
   "repository": {
     "type": "git",
