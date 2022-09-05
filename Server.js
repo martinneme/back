@@ -4,8 +4,9 @@ import path from 'path';
 import routerProducts from './src/routers/routerProducts.js'
 import routerCart from './src/routers/routerCart.js'
 import { fileURLToPath } from 'url';
+import connection from "./db/index.js";
 
-
+connection();
 
 const PORT = process.env.PORT || 8080;
 const __dirname = fileURLToPath(import.meta.url);
